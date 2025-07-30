@@ -90,7 +90,7 @@ def create(type_or_name, global_cfg=GLOBAL_CONFIG, **kwargs):
             del _cfg[_arg]
         _cfg.update(_cfg['_kwargs'])
         _cfg.update(cfg)
-        _cfg.update(kwargs) # TODO recive extra kwargs
+        _cfg.update(kwargs)
         name = _cfg.pop('type')
 
         return create(name, global_cfg)
@@ -130,7 +130,6 @@ def create(type_or_name, global_cfg=GLOBAL_CONFIG, **kwargs):
             if _type not in global_cfg:
                 raise ValueError(f'Missing {_type} in inspect stage.')
 
-            # TODO
             _cfg: dict = global_cfg[_type]
             _keys = [k for k in _cfg.keys() if not k.startswith('_')]
             for _arg in _keys:
