@@ -234,7 +234,6 @@ class DEIMCriterion(nn.Module):
         else:
             assert 'aux_outputs' in outputs, ''
 
-            # Compute the average number of target boxes accross all nodes, for normalization purposes
         num_boxes = sum(len(t["labels"]) for t in targets)
         num_boxes = torch.as_tensor([num_boxes], dtype=torch.float, device=next(iter(outputs.values())).device)
         if is_dist_available_and_initialized():

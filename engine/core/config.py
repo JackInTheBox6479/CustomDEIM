@@ -23,7 +23,7 @@ class BaseConfig(object):
         self.train_dataset = None
         self.val_dataset = None
 
-        #dataset
+        #data
         self.num_workers = None
         self.batch_size = None
         self.train_shuffle = None

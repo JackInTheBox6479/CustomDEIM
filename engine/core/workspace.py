@@ -2,12 +2,13 @@ import inspect
 import importlib
 import functools
 from collections import defaultdict
-from typing import Any
+from typing import Any, Dict, Optional, List
+
 
 GLOBAL_CONFIG = defaultdict(dict)
 
-def register(dct :Any=GLOBAL_CONFIG, name=None, force=False):
 
+def register(dct :Any=GLOBAL_CONFIG, name=None, force=False):
     def decorator(foo):
         register_name = foo.__name__ if name is None else name
         if not force:
@@ -40,6 +41,8 @@ def register(dct :Any=GLOBAL_CONFIG, name=None, force=False):
 
     return decorator
 
+
+
 def extract_schema(module: type):
     argspec = inspect.getfullargspec(module.__init__)
     arg_names = [arg for arg in argspec.args if arg != 'self']
@@ -52,7 +55,6 @@ def extract_schema(module: type):
     schame['_inject'] = getattr(module, '__inject__', [])
     schame['_share'] = getattr(module, '__share__', [])
     schame['_kwargs'] = {}
-
     for i, name in enumerate(arg_names):
         if name in schame['_share']:
             assert i >= num_requires, 'share config must have default value.'
@@ -69,6 +71,7 @@ def extract_schema(module: type):
 
     return schame
 
+
 def create(type_or_name, global_cfg=GLOBAL_CONFIG, **kwargs):
     assert type(type_or_name) in (type, str), 'create should be modules or name.'
 
@@ -84,7 +87,6 @@ def create(type_or_name, global_cfg=GLOBAL_CONFIG, **kwargs):
 
     if isinstance(cfg, dict) and 'type' in cfg:
         _cfg: dict = global_cfg[cfg['type']]
-        # clean args
         _keys = [k for k in _cfg.keys() if not k.startswith('_')]
         for _arg in _keys:
             del _cfg[_arg]
@@ -143,5 +145,4 @@ def create(type_or_name, global_cfg=GLOBAL_CONFIG, **kwargs):
             raise ValueError(f'Inject does not support {_k}')
 
     module_kwargs = {k: v for k, v in module_kwargs.items() if not k.startswith('_')}
-
     return module(**module_kwargs)

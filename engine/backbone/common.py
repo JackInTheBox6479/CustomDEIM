@@ -43,7 +43,6 @@ class FrozenBatchNorm2d(nn.Module):
         bias = b - rm * scale
         return x * scale + bias
 
-    #TODO: Figure out what this means
     def extra_repr(self):
         return('num_features={}, bias={}, running_mean={}, running_var={}').format(**self.__dict__)
 

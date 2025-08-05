@@ -15,7 +15,7 @@ import faster_coco_eval
 import faster_coco_eval.core.mask as coco_mask
 from dataset import DetDataset
 from misc import convert_to_tv_tensor
-from ..core import register
+from engine.core import register
 
 torchvision.disable_beta_transforms_warning()
 faster_coco_eval.init_as_pycocotools()
